@@ -24,6 +24,7 @@ histórico é persistido em **PostgreSQL** por trás de uma abstração de repos
 ## Sumário
 
 - [Visão geral](#visão-geral)
+- [Demo](#demo)
 - [Stack](#stack)
 - [Arquitetura](#arquitetura)
 - [Pré-requisitos](#pré-requisitos)
@@ -47,6 +48,15 @@ O serviço resolve o requisito central de **monitoramento contínuo de câmbio**
    (`/rates/history`), ambos exigidos pelo teste.
 4. O dashboard React consome a API, monta **candlesticks (OHLC)** por timeframe e atualiza
    a cada 30s.
+
+## Demo
+
+Vídeo curto com a stack completa em execução: coleta orquestrada pelo Airflow, API FastAPI e
+o dashboard de candlesticks atualizando em tempo quase real.
+
+[![Demonstração do Trillia Exchange Monitor](https://img.youtube.com/vi/Z3HWFJzK0NM/hqdefault.jpg)](https://youtu.be/Z3HWFJzK0NM)
+
+Link direto: https://youtu.be/Z3HWFJzK0NM
 
 ## Stack
 
@@ -200,7 +210,8 @@ Terraform a cada push/PR.
 ## Diferenciais entregues
 
 Dashboard React (candlestick OHLC) · Docker Compose · múltiplos pares de moedas ·
-Apache Airflow · Terraform esquemático (AWS) · métricas Prometheus · CI/CD (GitHub Actions).
+Apache Airflow · Terraform esquemático (AWS) · métricas Prometheus · CI/CD (GitHub Actions) ·
+vídeo de demonstração.
 
 ## Licença
 
