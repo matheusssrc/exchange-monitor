@@ -7,11 +7,9 @@ from .duckdb_dsn import to_libpq_dsn
 
 
 def _sql_dir() -> Path:
-    here = Path(__file__).resolve()
-    for parent in here.parents:
-        if (parent / "processing" / "build_silver.sql").exists():
-            return parent / "processing"
-    raise RuntimeError("processing SQL dir not found")
+    """SQL files ship inside the package (next to this module), so they are
+    available whether running from source, an installed wheel, or a container."""
+    return Path(__file__).resolve().parent / "sql"
 
 
 def _run_sql_file(con: duckdb.DuckDBPyConnection, name: str) -> None:

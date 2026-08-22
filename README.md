@@ -267,7 +267,6 @@ Terraform a cada push/PR.
 ├── backend/        # API FastAPI + Clean Architecture + CLI (coleta + Medallion)
 ├── frontend/       # SPA React (Vite + TypeScript)
 ├── airflow/        # Dockerfile + DAGs collect_rates e build_medallion
-├── processing/     # SQL DuckDB das camadas Silver e Gold
 ├── queries/        # consultas analíticas sobre a camada Gold
 ├── data/           # bronze/ silver/ gold/ (runtime) e sample/ (amostra versionada)
 ├── entregas/       # documentos e evidências da atividade

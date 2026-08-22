@@ -5,17 +5,17 @@ import duckdb
 from exchange_monitor.infrastructure.processing import pipeline
 
 
-def _repo_root() -> Path:
-    p = Path(__file__).resolve()
-    for parent in p.parents:
-        if (parent / "processing" / "build_silver.sql").exists():
-            return parent
-    raise RuntimeError("repo root not found")
+def _sample_csv() -> Path:
+    for parent in Path(__file__).resolve().parents:
+        cand = parent / "data" / "sample" / "bronze_sample.csv"
+        if cand.exists():
+            return cand
+    raise RuntimeError("sample bronze CSV not found")
 
 
 def _bronze_con() -> duckdb.DuckDBPyConnection:
     con = duckdb.connect()
-    sample = _repo_root() / "data" / "sample" / "bronze_sample.csv"
+    sample = _sample_csv()
     con.execute(f"CREATE TABLE bronze AS SELECT * FROM read_csv_auto('{sample.as_posix()}')")
     return con
 
