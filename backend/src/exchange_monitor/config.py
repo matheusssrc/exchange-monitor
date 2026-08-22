@@ -32,6 +32,12 @@ class Settings(BaseSettings):
     log_json: bool = True
     environment: str = "development"
 
+    data_dir: str = "data"
+
+    @property
+    def bronze_dir(self) -> str:
+        return f"{self.data_dir}/bronze"
+
 
 @lru_cache
 def get_settings() -> Settings:

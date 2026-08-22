@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from exchange_monitor.application.use_cases.collect_rate import CollectRateUseCase
 from exchange_monitor.config import Settings, get_settings
 from exchange_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.infrastructure.bronze.raw_sink import JsonlBronzeSink
 from exchange_monitor.infrastructure.observability.metrics import (
     polling_duration_seconds,
     polling_failure_total,
@@ -29,7 +30,8 @@ def _build_provider(settings: Settings) -> tuple[AwesomeApiProvider, AwesomeApiC
         timeout_seconds=settings.provider_timeout_seconds,
         max_attempts=settings.provider_retry_attempts,
     )
-    return AwesomeApiProvider(client=client), client
+    raw_sink = JsonlBronzeSink(settings.bronze_dir)
+    return AwesomeApiProvider(client=client, raw_sink=raw_sink), client
 
 
 async def _dispose_engine(engine: AsyncEngine) -> None:
