@@ -1,4 +1,4 @@
-# Trillia Exchange Monitor
+# Exchange Monitor
 
 Monitor contínuo de cotações de câmbio (BRL, USD e outras moedas). O **Apache Airflow**
 coleta a [AwesomeAPI](https://economia.awesomeapi.com.br) em intervalo configurável, o
@@ -54,7 +54,7 @@ O serviço resolve o requisito central de **monitoramento contínuo de câmbio**
 Vídeo curto com a stack completa em execução: coleta orquestrada pelo Airflow, API FastAPI e
 o dashboard de candlesticks atualizando em tempo quase real.
 
-[![Demonstração do Trillia Exchange Monitor](https://img.youtube.com/vi/Z3HWFJzK0NM/hqdefault.jpg)](https://youtu.be/Z3HWFJzK0NM)
+[![Demonstração do Exchange Monitor](https://img.youtube.com/vi/Z3HWFJzK0NM/hqdefault.jpg)](https://youtu.be/Z3HWFJzK0NM)
 
 Link direto: https://youtu.be/Z3HWFJzK0NM
 

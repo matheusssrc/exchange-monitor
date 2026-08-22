@@ -66,11 +66,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build backend image
-        run: docker build --target runtime -t trillia-backend:ci ./backend
+        run: docker build --target runtime -t exchange-backend:ci ./backend
       - name: Build frontend image
-        run: docker build -t trillia-frontend:ci ./frontend
+        run: docker build -t exchange-frontend:ci ./frontend
       - name: Build Airflow image
-        run: docker build -f airflow/Dockerfile -t trillia-airflow:ci .
+        run: docker build -f airflow/Dockerfile -t exchange-airflow:ci .
 
   terraform:
     runs-on: ubuntu-latest

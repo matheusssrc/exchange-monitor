@@ -42,7 +42,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     settings = settings or get_settings()
 
     app = FastAPI(
-        title="Trillia Exchange Monitor",
+        title="Exchange Monitor",
         version="1.0.0",
         description="Continuous exchange rate monitor (BRL/USD and more).",
         lifespan=lifespan,

@@ -1,4 +1,4 @@
-# Trillia Exchange Monitor — Backend
+# Exchange Monitor — Backend
 
 API e domínio do monitor de câmbio. Implementado em **Python 3.12** com **FastAPI** e
 **Clean Architecture**: o domínio não conhece framework nem banco; a persistência fica

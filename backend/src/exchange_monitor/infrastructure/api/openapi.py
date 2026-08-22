@@ -12,7 +12,7 @@ def build_openapi(app: FastAPI) -> dict[str, Any]:
         title=app.title,
         version=app.version,
         description=(
-            "REST API for the Trillia Exchange Monitor.\n\n"
+            "REST API for the Exchange Monitor.\n\n"
             "Polls one or more currency pairs from AwesomeAPI on a configurable interval, "
             "persists the history in PostgreSQL, and exposes the latest and historical rates."
         ),

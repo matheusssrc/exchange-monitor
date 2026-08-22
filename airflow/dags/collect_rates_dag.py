@@ -1,4 +1,4 @@
-"""Trillia exchange-rate collection DAG.
+"""Exchange-rate collection DAG.
 
 Runs on a configurable interval (EXCHANGE_POLLING_INTERVAL_SECONDS, default 30s)
 and fans out one mapped Bash task per monitored pair. Each task invokes the
@@ -46,7 +46,7 @@ def _poll_interval() -> timedelta:
     catchup=False,
     max_active_runs=1,
     default_args={"retries": 1, "retry_delay": timedelta(seconds=20)},
-    tags=["trillia", "exchange-rates"],
+    tags=["exchange", "exchange-rates"],
 )
 def collect_rates() -> None:
     BashOperator.partial(task_id="collect").expand(

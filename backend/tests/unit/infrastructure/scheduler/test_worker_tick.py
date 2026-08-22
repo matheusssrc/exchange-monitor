@@ -5,11 +5,11 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from tests.unit.application.use_cases.fakes import InMemoryRateRepository
 from exchange_monitor.domain.entities import ExchangeRate
 from exchange_monitor.domain.value_objects import CurrencyPair
 from exchange_monitor.infrastructure.providers.exceptions import ProviderUnavailable
 from exchange_monitor.infrastructure.scheduler.worker import _tick
+from tests.unit.application.use_cases.fakes import InMemoryRateRepository
 
 
 class _FakeSessionCM:

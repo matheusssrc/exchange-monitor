@@ -5,7 +5,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends build-essential libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install the Trillia backend into an ISOLATED virtualenv. Airflow 2.10 pins
+# Install the Exchange backend into an ISOLATED virtualenv. Airflow 2.10 pins
 # SQLAlchemy <2.0; the backend needs SQLAlchemy 2.0. Keeping it in its own venv
 # avoids breaking Airflow's metadata ORM. The DAG invokes this venv's CLI.
 COPY backend/pyproject.toml /opt/exchange/backend/pyproject.toml

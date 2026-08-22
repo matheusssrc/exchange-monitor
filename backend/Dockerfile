@@ -18,11 +18,11 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libpq5 wget \
     && rm -rf /var/lib/apt/lists/* \
-    && useradd --create-home --uid 1001 trillia
+    && useradd --create-home --uid 1001 exchange
 COPY --from=deps /install /usr/local
 COPY src ./src
 COPY alembic.ini ./
-USER trillia
+USER exchange
 ENV PYTHONPATH=/app/src
 ENTRYPOINT ["python", "-m", "exchange_monitor"]
 CMD ["api"]

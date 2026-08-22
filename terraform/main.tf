@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Schematic AWS topology for the Trillia Exchange Monitor.
+# Schematic AWS topology for the Exchange Monitor.
 # NOT APPLIED. Demonstrates the intended ECS Fargate + RDS + ALB deployment.
 # ---------------------------------------------------------------------------
 
