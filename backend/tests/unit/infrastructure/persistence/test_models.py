@@ -1,7 +1,8 @@
 from datetime import UTC, datetime
 from decimal import Decimal
+from typing import cast
 
-from sqlalchemy import inspect
+from sqlalchemy import Table, inspect
 
 from exchange_monitor.infrastructure.persistence.models import Base, ExchangeRateModel
 
@@ -24,12 +25,14 @@ def test_required_columns_exist() -> None:
 
 
 def test_unique_constraint_defined() -> None:
-    constraints = {c.name for c in ExchangeRateModel.__table__.constraints}
+    table = cast(Table, ExchangeRateModel.__table__)
+    constraints = {c.name for c in table.constraints}
     assert "uq_rate_pair_fetched_at" in constraints
 
 
 def test_indexes_defined() -> None:
-    indexes = {i.name for i in ExchangeRateModel.__table__.indexes}
+    table = cast(Table, ExchangeRateModel.__table__)
+    indexes = {i.name for i in table.indexes}
     assert "ix_rate_pair_fetched_at" in indexes
     assert "ix_rate_pair_provider_ts_desc" in indexes
 
