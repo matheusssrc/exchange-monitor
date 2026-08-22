@@ -14,9 +14,9 @@ def _parse_pairs(raw: str | list[str]) -> list[CurrencyPair]:
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="TRILLIA_", extra="ignore")
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="EXCHANGE_", extra="ignore")
 
-    database_url: str = "postgresql+asyncpg://trillia:trillia@db:5432/trillia"
+    database_url: str = "postgresql+asyncpg://exchange:exchange@db:5432/exchange"
     awesomeapi_base_url: str = "https://economia.awesomeapi.com.br"
     provider_timeout_seconds: float = 5.0
     provider_retry_attempts: int = 4

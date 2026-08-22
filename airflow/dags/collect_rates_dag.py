@@ -1,6 +1,6 @@
 """Trillia exchange-rate collection DAG.
 
-Runs on a configurable interval (TRILLIA_POLLING_INTERVAL_SECONDS, default 30s)
+Runs on a configurable interval (EXCHANGE_POLLING_INTERVAL_SECONDS, default 30s)
 and fans out one mapped Bash task per monitored pair. Each task invokes the
 backend CLI inside an isolated virtualenv (/opt/trillia/venv), which keeps the
 backend's SQLAlchemy 2.0 dependency away from Airflow's own SQLAlchemy 1.4
@@ -26,13 +26,13 @@ DEFAULT_PAIRS = "BRL-USD,BRL-EUR,BRL-ARS,BRL-UYU,USD-BRL,USD-EUR,USD-ARS,USD-UYU
 
 
 def _monitored_pairs() -> list[str]:
-    raw = os.environ.get("TRILLIA_MONITORED_PAIRS", DEFAULT_PAIRS)
+    raw = os.environ.get("EXCHANGE_MONITORED_PAIRS", DEFAULT_PAIRS)
     return [pair.strip() for pair in raw.split(",") if pair.strip()]
 
 
 def _poll_interval() -> timedelta:
     try:
-        seconds = int(os.environ.get("TRILLIA_POLLING_INTERVAL_SECONDS", "30"))
+        seconds = int(os.environ.get("EXCHANGE_POLLING_INTERVAL_SECONDS", "30"))
     except ValueError:
         seconds = 30
     return timedelta(seconds=max(seconds, 5))

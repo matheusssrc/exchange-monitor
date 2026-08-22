@@ -34,7 +34,7 @@ cd backend
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
 
-# Suba um Postgres e exporte TRILLIA_DATABASE_URL apontando para ele.
+# Suba um Postgres e exporte EXCHANGE_DATABASE_URL apontando para ele.
 python -m exchange_monitor migrate                    # aplica as migrations (alembic upgrade head)
 python -m exchange_monitor api --host 0.0.0.0 --port 8000
 ```
@@ -82,10 +82,10 @@ mypy .                 # tipagem estrita
 
 ## Configuração
 
-Via variáveis de ambiente com prefixo `TRILLIA_` (ver [`.env.example`](../.env.example)):
-`TRILLIA_DATABASE_URL`, `TRILLIA_MONITORED_PAIRS`, `TRILLIA_POLLING_INTERVAL_SECONDS`,
-`TRILLIA_AWESOMEAPI_BASE_URL`, `TRILLIA_PROVIDER_TIMEOUT_SECONDS`,
-`TRILLIA_PROVIDER_RETRY_ATTEMPTS`, `TRILLIA_LOG_LEVEL`, `TRILLIA_LOG_JSON`.
+Via variáveis de ambiente com prefixo `EXCHANGE_` (ver [`.env.example`](../.env.example)):
+`EXCHANGE_DATABASE_URL`, `EXCHANGE_MONITORED_PAIRS`, `EXCHANGE_POLLING_INTERVAL_SECONDS`,
+`EXCHANGE_AWESOMEAPI_BASE_URL`, `EXCHANGE_PROVIDER_TIMEOUT_SECONDS`,
+`EXCHANGE_PROVIDER_RETRY_ATTEMPTS`, `EXCHANGE_LOG_LEVEL`, `EXCHANGE_LOG_JSON`.
 
 ---
 

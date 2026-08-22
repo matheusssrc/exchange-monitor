@@ -111,7 +111,7 @@ flowchart LR
 
 **Fluxo de uma coleta**
 
-1. O DAG `collect_rates` dispara; os pares vêm de `TRILLIA_MONITORED_PAIRS`.
+1. O DAG `collect_rates` dispara; os pares vêm de `EXCHANGE_MONITORED_PAIRS`.
 2. Uma task mapeada roda por par → `collect_pair(par)` → `CollectRateUseCase.execute` →
    busca no provider (retry com backoff + jitter) → gravação no repositório
    (`ON CONFLICT DO NOTHING`).
@@ -137,7 +137,7 @@ docker compose up -d --build
 | Airflow UI | http://localhost:8081 (admin / admin) |
 
 O DAG `collect_rates` sobe **despausado** e persiste cotações no intervalo definido em
-`TRILLIA_POLLING_INTERVAL_SECONDS` (padrão 30s). O dashboard refaz o fetch a cada 30s.
+`EXCHANGE_POLLING_INTERVAL_SECONDS` (padrão 30s). O dashboard refaz o fetch a cada 30s.
 
 ```bash
 docker compose down       # para a stack
@@ -167,13 +167,13 @@ Tudo via variáveis de ambiente (ver [`.env.example`](.env.example)):
 
 | Variável | Padrão | Descrição |
 |---|---|---|
-| `TRILLIA_DATABASE_URL` | `postgresql+asyncpg://trillia:trillia@db:5432/trillia` | URL do banco (async) |
-| `TRILLIA_MONITORED_PAIRS` | `BRL-USD,BRL-EUR,...` | Pares monitorados (CSV) |
-| `TRILLIA_POLLING_INTERVAL_SECONDS` | `30` | Intervalo de coleta do Airflow |
-| `TRILLIA_AWESOMEAPI_BASE_URL` | `https://economia.awesomeapi.com.br` | Base do provider |
-| `TRILLIA_PROVIDER_TIMEOUT_SECONDS` | `5` | Timeout do provider |
-| `TRILLIA_PROVIDER_RETRY_ATTEMPTS` | `4` | Tentativas com backoff |
-| `TRILLIA_LOG_LEVEL` / `TRILLIA_LOG_JSON` | `INFO` / `true` | Logging (structlog) |
+| `EXCHANGE_DATABASE_URL` | `postgresql+asyncpg://exchange:exchange@db:5432/exchange` | URL do banco (async) |
+| `EXCHANGE_MONITORED_PAIRS` | `BRL-USD,BRL-EUR,...` | Pares monitorados (CSV) |
+| `EXCHANGE_POLLING_INTERVAL_SECONDS` | `30` | Intervalo de coleta do Airflow |
+| `EXCHANGE_AWESOMEAPI_BASE_URL` | `https://economia.awesomeapi.com.br` | Base do provider |
+| `EXCHANGE_PROVIDER_TIMEOUT_SECONDS` | `5` | Timeout do provider |
+| `EXCHANGE_PROVIDER_RETRY_ATTEMPTS` | `4` | Tentativas com backoff |
+| `EXCHANGE_LOG_LEVEL` / `EXCHANGE_LOG_JSON` | `INFO` / `true` | Logging (structlog) |
 | `VITE_API_BASE_URL` | `http://localhost:8000` | Base da API para o frontend |
 
 ## Testes e qualidade
