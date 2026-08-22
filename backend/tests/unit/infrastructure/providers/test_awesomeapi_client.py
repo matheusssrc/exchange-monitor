@@ -5,8 +5,8 @@ import pytest
 import pytest_asyncio
 import respx
 
-from trillia_monitor.infrastructure.providers.awesomeapi_client import AwesomeApiClient
-from trillia_monitor.infrastructure.providers.exceptions import (
+from exchange_monitor.infrastructure.providers.awesomeapi_client import AwesomeApiClient
+from exchange_monitor.infrastructure.providers.exceptions import (
     ProviderRateLimited,
     ProviderUnavailable,
 )

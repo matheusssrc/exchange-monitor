@@ -1,8 +1,8 @@
 import pytest
 from pydantic import ValidationError
 
-from trillia_monitor.config import Settings
-from trillia_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.config import Settings
+from exchange_monitor.domain.value_objects import CurrencyPair
 
 
 def test_defaults_have_usd_brl_pair() -> None:

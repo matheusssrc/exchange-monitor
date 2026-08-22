@@ -38,7 +38,7 @@ jobs:
       - name: Tests (unit + integration)
         env:
           TRILLIA_DATABASE_URL: postgresql+asyncpg://trillia:trillia@localhost:5432/trillia
-        run: pytest --cov=trillia_monitor --cov-report=term-missing --cov-fail-under=85
+        run: pytest --cov=exchange_monitor --cov-report=term-missing --cov-fail-under=85
 
   frontend:
     runs-on: ubuntu-latest

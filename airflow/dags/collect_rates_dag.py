@@ -9,7 +9,7 @@ environment. The CLI reuses CollectRateUseCase via collect_pair.
 Airflow is the orchestrator that replaces the former APScheduler worker
 (see ADR-0009; ADR-0003 superseded).
 
-This module imports only `airflow` and the stdlib — never `trillia_monitor` —
+This module imports only `airflow` and the stdlib — never `exchange_monitor` —
 so parsing the DAG does not pull SQLAlchemy 2.0 into the scheduler/webserver.
 """
 
@@ -51,7 +51,7 @@ def _poll_interval() -> timedelta:
 def collect_rates() -> None:
     BashOperator.partial(task_id="collect").expand(
         bash_command=[
-            f"{VENV_PYTHON} -m trillia_monitor collect {pair}"
+            f"{VENV_PYTHON} -m exchange_monitor collect {pair}"
             for pair in _monitored_pairs()
         ],
     )

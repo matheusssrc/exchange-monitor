@@ -1,10 +1,10 @@
 from collections.abc import Sequence
 from datetime import datetime
 
-from trillia_monitor.application.ports.rate_provider import RateProvider
-from trillia_monitor.application.ports.rate_repository import RateRepository
-from trillia_monitor.domain.entities import ExchangeRate
-from trillia_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.application.ports.rate_provider import RateProvider
+from exchange_monitor.application.ports.rate_repository import RateRepository
+from exchange_monitor.domain.entities import ExchangeRate
+from exchange_monitor.domain.value_objects import CurrencyPair
 
 
 class InMemoryRateRepository(RateRepository):

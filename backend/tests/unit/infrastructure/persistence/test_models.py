@@ -3,7 +3,7 @@ from decimal import Decimal
 
 from sqlalchemy import inspect
 
-from trillia_monitor.infrastructure.persistence.models import Base, ExchangeRateModel
+from exchange_monitor.infrastructure.persistence.models import Base, ExchangeRateModel
 
 
 def test_table_name() -> None:

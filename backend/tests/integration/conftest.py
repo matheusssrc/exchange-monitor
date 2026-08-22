@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import (
 )
 from testcontainers.postgres import PostgresContainer
 
-from trillia_monitor.infrastructure.persistence.models import Base
+from exchange_monitor.infrastructure.persistence.models import Base
 
 
 @pytest.fixture(scope="session")

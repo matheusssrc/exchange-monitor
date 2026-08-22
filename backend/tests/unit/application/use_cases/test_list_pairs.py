@@ -1,7 +1,7 @@
 import pytest
 
-from trillia_monitor.application.use_cases.list_pairs import ListPairsUseCase
-from trillia_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.application.use_cases.list_pairs import ListPairsUseCase
+from exchange_monitor.domain.value_objects import CurrencyPair
 
 from .fakes import InMemoryRateRepository
 

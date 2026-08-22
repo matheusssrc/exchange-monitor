@@ -5,7 +5,7 @@ from typing import Any
 import pytest
 from pydantic import ValidationError
 
-from trillia_monitor.infrastructure.providers.awesomeapi_schema import AwesomeApiResponse
+from exchange_monitor.infrastructure.providers.awesomeapi_schema import AwesomeApiResponse
 
 
 def _payload(timestamp: str = "1700000000") -> dict[str, Any]:

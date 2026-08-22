@@ -1,9 +1,9 @@
 from datetime import UTC, datetime
 from decimal import Decimal
 
-from trillia_monitor.domain.entities import ExchangeRate
-from trillia_monitor.domain.value_objects import CurrencyPair
-from trillia_monitor.infrastructure.api.schemas import (
+from exchange_monitor.domain.entities import ExchangeRate
+from exchange_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.infrastructure.api.schemas import (
     ErrorOut,
     HistoryPage,
     PairOut,

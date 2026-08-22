@@ -1,6 +1,6 @@
 from prometheus_client import Counter, Histogram
 
-from trillia_monitor.infrastructure.observability.metrics import (
+from exchange_monitor.infrastructure.observability.metrics import (
     metrics_app,
     polling_duration_seconds,
     polling_failure_total,

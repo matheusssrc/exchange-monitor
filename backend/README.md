@@ -7,7 +7,7 @@ atrás da porta `RateRepository` e o provedor de cotações atrás de `RateProvi
 ## Camadas
 
 ```
-src/trillia_monitor/
+src/exchange_monitor/
 ├── domain/           # CurrencyPair, ExchangeRate, invariantes e erros tipados
 ├── application/      # Casos de uso + portas (RateRepository, RateProvider)
 └── infrastructure/
@@ -35,8 +35,8 @@ python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\act
 pip install -e ".[dev]"
 
 # Suba um Postgres e exporte TRILLIA_DATABASE_URL apontando para ele.
-python -m trillia_monitor migrate                    # aplica as migrations (alembic upgrade head)
-python -m trillia_monitor api --host 0.0.0.0 --port 8000
+python -m exchange_monitor migrate                    # aplica as migrations (alembic upgrade head)
+python -m exchange_monitor api --host 0.0.0.0 --port 8000
 ```
 
 ### CLI (`trillia-monitor`)
@@ -49,7 +49,7 @@ python -m trillia_monitor api --host 0.0.0.0 --port 8000
 | `worker` | Worker APScheduler (alternativa local ao Airflow). |
 
 ```bash
-python -m trillia_monitor collect BRL-USD
+python -m exchange_monitor collect BRL-USD
 ```
 
 ## API

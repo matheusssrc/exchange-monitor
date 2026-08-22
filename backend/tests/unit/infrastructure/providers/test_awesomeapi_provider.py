@@ -5,13 +5,13 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from trillia_monitor.domain.value_objects import CurrencyPair
-from trillia_monitor.infrastructure.providers.awesomeapi_client import AwesomeApiClient
-from trillia_monitor.infrastructure.providers.awesomeapi_provider import (
+from exchange_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.infrastructure.providers.awesomeapi_client import AwesomeApiClient
+from exchange_monitor.infrastructure.providers.awesomeapi_provider import (
     PROVIDER_NAME,
     AwesomeApiProvider,
 )
-from trillia_monitor.infrastructure.providers.exceptions import ProviderResponseInvalid
+from exchange_monitor.infrastructure.providers.exceptions import ProviderResponseInvalid
 
 
 def _payload() -> dict[str, Any]:

@@ -7,18 +7,18 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from tests.unit.application.use_cases.fakes import InMemoryRateRepository
-from trillia_monitor.application.use_cases.get_latest_rate import GetLatestRateUseCase
-from trillia_monitor.application.use_cases.get_rate_history import GetRateHistoryUseCase
-from trillia_monitor.application.use_cases.list_pairs import ListPairsUseCase
-from trillia_monitor.domain.entities import ExchangeRate
-from trillia_monitor.domain.value_objects import CurrencyPair
-from trillia_monitor.infrastructure.api.dependencies import (
+from exchange_monitor.application.use_cases.get_latest_rate import GetLatestRateUseCase
+from exchange_monitor.application.use_cases.get_rate_history import GetRateHistoryUseCase
+from exchange_monitor.application.use_cases.list_pairs import ListPairsUseCase
+from exchange_monitor.domain.entities import ExchangeRate
+from exchange_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.infrastructure.api.dependencies import (
     get_latest_rate_use_case,
     get_list_pairs_use_case,
     get_rate_history_use_case,
 )
-from trillia_monitor.infrastructure.api.errors import register_exception_handlers
-from trillia_monitor.infrastructure.api.routers import health, pairs, rates
+from exchange_monitor.infrastructure.api.errors import register_exception_handlers
+from exchange_monitor.infrastructure.api.routers import health, pairs, rates
 
 
 def _rate(day: int = 1) -> ExchangeRate:

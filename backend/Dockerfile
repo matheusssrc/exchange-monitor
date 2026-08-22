@@ -24,5 +24,5 @@ COPY src ./src
 COPY alembic.ini ./
 USER trillia
 ENV PYTHONPATH=/app/src
-ENTRYPOINT ["python", "-m", "trillia_monitor"]
+ENTRYPOINT ["python", "-m", "exchange_monitor"]
 CMD ["api"]

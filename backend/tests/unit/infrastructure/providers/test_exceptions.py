@@ -1,6 +1,6 @@
 import pytest
 
-from trillia_monitor.infrastructure.providers.exceptions import (
+from exchange_monitor.infrastructure.providers.exceptions import (
     ProviderError,
     ProviderRateLimited,
     ProviderResponseInvalid,

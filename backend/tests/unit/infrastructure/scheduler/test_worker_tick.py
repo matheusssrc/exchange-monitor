@@ -6,10 +6,10 @@ from unittest.mock import AsyncMock
 import pytest
 
 from tests.unit.application.use_cases.fakes import InMemoryRateRepository
-from trillia_monitor.domain.entities import ExchangeRate
-from trillia_monitor.domain.value_objects import CurrencyPair
-from trillia_monitor.infrastructure.providers.exceptions import ProviderUnavailable
-from trillia_monitor.infrastructure.scheduler.worker import _tick
+from exchange_monitor.domain.entities import ExchangeRate
+from exchange_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.infrastructure.providers.exceptions import ProviderUnavailable
+from exchange_monitor.infrastructure.scheduler.worker import _tick
 
 
 class _FakeSessionCM:
@@ -45,7 +45,7 @@ async def test_tick_invokes_collect_use_case(monkeypatch: pytest.MonkeyPatch) ->
     """The tick wires the use case to the in-memory repo and saves the rate."""
     repo = InMemoryRateRepository(monitored=[CurrencyPair("USD", "BRL")])
 
-    import trillia_monitor.infrastructure.scheduler.worker as w
+    import exchange_monitor.infrastructure.scheduler.worker as w
 
     monkeypatch.setattr(w, "SqlAlchemyRateRepository", lambda **_: repo)
 
@@ -64,7 +64,7 @@ async def test_tick_invokes_collect_use_case(monkeypatch: pytest.MonkeyPatch) ->
 
 @pytest.mark.asyncio
 async def test_tick_swallows_provider_error(monkeypatch: pytest.MonkeyPatch) -> None:
-    import trillia_monitor.infrastructure.scheduler.worker as w
+    import exchange_monitor.infrastructure.scheduler.worker as w
 
     repo = InMemoryRateRepository(monitored=[CurrencyPair("USD", "BRL")])
     monkeypatch.setattr(w, "SqlAlchemyRateRepository", lambda **_: repo)

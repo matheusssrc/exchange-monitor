@@ -1,7 +1,7 @@
 import pytest
 
-from trillia_monitor.application.ports.rate_provider import RateProvider
-from trillia_monitor.application.ports.rate_repository import RateRepository
+from exchange_monitor.application.ports.rate_provider import RateProvider
+from exchange_monitor.application.ports.rate_repository import RateRepository
 
 
 def test_rate_repository_is_abstract() -> None:

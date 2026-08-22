@@ -3,13 +3,13 @@ from decimal import Decimal
 
 import pytest
 
-from trillia_monitor.application.use_cases.get_rate_history import (
+from exchange_monitor.application.use_cases.get_rate_history import (
     MAX_HISTORY_DAYS,
     GetRateHistoryUseCase,
 )
-from trillia_monitor.domain.entities import ExchangeRate
-from trillia_monitor.domain.exceptions import InvalidDateRange
-from trillia_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.domain.entities import ExchangeRate
+from exchange_monitor.domain.exceptions import InvalidDateRange
+from exchange_monitor.domain.value_objects import CurrencyPair
 
 from .fakes import InMemoryRateRepository
 

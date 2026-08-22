@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from trillia_monitor.config import Settings
-from trillia_monitor.infrastructure.api.app import create_app
+from exchange_monitor.config import Settings
+from exchange_monitor.infrastructure.api.app import create_app
 
 
 def test_create_app_returns_fastapi_instance() -> None:
