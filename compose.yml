@@ -39,7 +39,10 @@ services:
       EXCHANGE_MONITORED_PAIRS: ${EXCHANGE_MONITORED_PAIRS:-BRL-USD,BRL-EUR,BRL-ARS,BRL-UYU,USD-BRL,USD-EUR,USD-ARS,USD-UYU}
       EXCHANGE_LOG_LEVEL: ${EXCHANGE_LOG_LEVEL:-INFO}
       EXCHANGE_CORS_ALLOW_ORIGINS: '["http://localhost:5173","http://localhost:8080"]'
+      EXCHANGE_DATA_DIR: /data
     ports: ["8000:8000"]
+    volumes:
+      - ./data:/data
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -86,6 +89,7 @@ services:
       EXCHANGE_MONITORED_PAIRS: ${EXCHANGE_MONITORED_PAIRS:-BRL-USD,BRL-EUR,BRL-ARS,BRL-UYU,USD-BRL,USD-EUR,USD-ARS,USD-UYU}
       EXCHANGE_POLLING_INTERVAL_SECONDS: ${EXCHANGE_POLLING_INTERVAL_SECONDS:-30}
       EXCHANGE_LOG_LEVEL: ${EXCHANGE_LOG_LEVEL:-INFO}
+      EXCHANGE_DATA_DIR: /data
     depends_on:
       airflow-db:
         condition: service_healthy
@@ -99,6 +103,8 @@ services:
       dockerfile: airflow/Dockerfile
     command: ["scheduler"]
     environment: *airflow-env
+    volumes:
+      - ./data:/data
     depends_on:
       airflow-init:
         condition: service_completed_successfully
