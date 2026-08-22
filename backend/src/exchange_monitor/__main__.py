@@ -5,7 +5,18 @@ import sys
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="exchange-monitor")
-    parser.add_argument("command", choices=("api", "worker", "migrate", "collect"))
+    parser.add_argument(
+        "command",
+        choices=(
+            "api",
+            "worker",
+            "migrate",
+            "collect",
+            "build-silver",
+            "build-gold",
+            "validate-gold",
+        ),
+    )
     parser.add_argument("pair", nargs="?", default=None)
     parser.add_argument("--host", default="0.0.0.0")
     parser.add_argument("--port", type=int, default=8000)
@@ -23,6 +34,14 @@ def main(argv: list[str] | None = None) -> int:
         if not args.pair:
             parser.error("collect requires a pair, e.g. 'collect BRL-USD'")
         return _run_collect(args.pair)
+    if args.command in ("build-silver", "build-gold", "validate-gold"):
+        step_by_command = {
+            "build-silver": "silver",
+            "build-gold": "gold",
+            "validate-gold": "validate",
+        }
+        _run_medallion(step_by_command[args.command])
+        return 0
     return 1
 
 
@@ -62,6 +81,31 @@ def _run_migrations(database_url: str) -> int:
     cfg.set_main_option("sqlalchemy.url", database_url)
     command.upgrade(cfg, "head")
     return 0
+
+
+def _run_medallion(step: str) -> None:
+    import duckdb
+    import structlog
+
+    from exchange_monitor.config import get_settings
+    from exchange_monitor.infrastructure.processing import pipeline
+
+    settings = get_settings()
+    silver_dir = f"{settings.data_dir}/silver"
+    gold_dir = f"{settings.data_dir}/gold"
+    con = duckdb.connect()
+    if step in ("silver", "validate"):
+        pipeline.attach_bronze_from_postgres(con, settings.database_url)
+        pipeline.build_silver(con, out_dir=silver_dir)
+    if step in ("gold", "validate"):
+        con.execute(
+            "CREATE OR REPLACE TABLE silver AS "
+            f"SELECT * FROM read_parquet('{silver_dir}/silver.parquet')"
+        )
+        pipeline.build_gold(con, out_dir=gold_dir)
+    if step == "validate":
+        report = pipeline.validate_gold(con)
+        structlog.get_logger().info("medallion.validate", **report)
 
 
 if __name__ == "__main__":

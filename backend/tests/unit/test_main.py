@@ -45,3 +45,16 @@ def test_main_routes_collect_command() -> None:
 def test_main_collect_requires_pair() -> None:
     with pytest.raises(SystemExit):
         main(["collect"])
+
+
+def test_build_silver_command_invokes_pipeline(monkeypatch: pytest.MonkeyPatch) -> None:
+    import exchange_monitor.__main__ as m
+
+    called: dict[str, str] = {}
+
+    def fake_run_medallion(step: str) -> None:
+        called["step"] = step
+
+    monkeypatch.setattr(m, "_run_medallion", fake_run_medallion)
+    assert m.main(["build-silver"]) == 0
+    assert called["step"] == "silver"
