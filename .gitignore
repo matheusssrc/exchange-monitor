@@ -90,3 +90,8 @@ notes/
 
 # PDFs / anexos
 *.pdf
+
+# Medallion runtime data (sample in data/sample/ is versioned)
+data/bronze/*.jsonl
+data/silver/
+data/gold/
