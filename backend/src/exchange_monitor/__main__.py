@@ -4,7 +4,7 @@ import sys
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="trillia-monitor")
+    parser = argparse.ArgumentParser(prog="exchange-monitor")
     parser.add_argument("command", choices=("api", "worker", "migrate", "collect"))
     parser.add_argument("pair", nargs="?", default=None)
     parser.add_argument("--host", default="0.0.0.0")

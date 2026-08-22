@@ -38,7 +38,7 @@ class AwesomeApiClient:
         self._client = httpx.AsyncClient(
             base_url=base_url,
             timeout=httpx.Timeout(timeout_seconds, connect=2.0),
-            headers={"User-Agent": "trillia-exchange-monitor/1.0"},
+            headers={"User-Agent": "exchange-monitor/1.0"},
         )
         self._retry_policy = AsyncRetrying(
             reraise=True,

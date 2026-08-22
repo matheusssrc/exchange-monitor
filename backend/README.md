@@ -39,7 +39,7 @@ python -m exchange_monitor migrate                    # aplica as migrations (al
 python -m exchange_monitor api --host 0.0.0.0 --port 8000
 ```
 
-### CLI (`trillia-monitor`)
+### CLI (`exchange-monitor`)
 
 | Comando | Descrição |
 |---|---|

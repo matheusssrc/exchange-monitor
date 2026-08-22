@@ -2,7 +2,7 @@
 
 Runs on a configurable interval (EXCHANGE_POLLING_INTERVAL_SECONDS, default 30s)
 and fans out one mapped Bash task per monitored pair. Each task invokes the
-backend CLI inside an isolated virtualenv (/opt/trillia/venv), which keeps the
+backend CLI inside an isolated virtualenv (/opt/exchange/venv), which keeps the
 backend's SQLAlchemy 2.0 dependency away from Airflow's own SQLAlchemy 1.4
 environment. The CLI reuses CollectRateUseCase via collect_pair.
 
@@ -21,7 +21,7 @@ from datetime import datetime, timedelta
 from airflow.decorators import dag
 from airflow.operators.bash import BashOperator
 
-VENV_PYTHON = "/opt/trillia/venv/bin/python"
+VENV_PYTHON = "/opt/exchange/venv/bin/python"
 DEFAULT_PAIRS = "BRL-USD,BRL-EUR,BRL-ARS,BRL-UYU,USD-BRL,USD-EUR,USD-ARS,USD-UYU"
 
 

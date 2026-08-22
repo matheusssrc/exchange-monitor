@@ -9,7 +9,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Project   = "trillia-exchange-monitor"
+      Project   = "exchange-monitor"
       ManagedBy = "terraform"
       Owner     = "Matheus"
     }

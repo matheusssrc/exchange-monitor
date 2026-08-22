@@ -28,7 +28,7 @@ def test_counters_can_be_incremented() -> None:
 def test_metrics_share_isolated_registry() -> None:
     names = {m.name for m in registry.collect()}
     assert {
-        "trillia_polling_success",
-        "trillia_polling_failure",
-        "trillia_polling_duration_seconds",
+        "exchange_polling_success",
+        "exchange_polling_failure",
+        "exchange_polling_duration_seconds",
     } <= names

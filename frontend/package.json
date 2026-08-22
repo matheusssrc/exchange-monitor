@@ -1,5 +1,5 @@
 {
-  "name": "trillia-exchange-monitor-frontend",
+  "name": "exchange-monitor-frontend",
   "private": true,
   "version": "1.0.0",
   "description": "React dashboard for the Trillia Exchange Monitor.",

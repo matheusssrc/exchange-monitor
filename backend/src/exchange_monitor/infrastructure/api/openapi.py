@@ -20,7 +20,7 @@ def build_openapi(app: FastAPI) -> dict[str, Any]:
     )
     schema["info"]["contact"] = {
         "name": "Matheus",
-        "url": "https://github.com/matheusssrc/trillia-exchange-monitor",
+        "url": "https://github.com/matheusssrc/exchange-monitor",
     }
     schema["info"]["license"] = {"name": "MIT"}
     schema["tags"] = [

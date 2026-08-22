@@ -8,13 +8,13 @@ RUN apt-get update \
 # Install the Trillia backend into an ISOLATED virtualenv. Airflow 2.10 pins
 # SQLAlchemy <2.0; the backend needs SQLAlchemy 2.0. Keeping it in its own venv
 # avoids breaking Airflow's metadata ORM. The DAG invokes this venv's CLI.
-COPY backend/pyproject.toml /opt/trillia/backend/pyproject.toml
-COPY backend/src /opt/trillia/backend/src
-RUN python3 -m venv /opt/trillia/venv \
-    && /opt/trillia/venv/bin/pip install --no-cache-dir --upgrade pip \
-    && /opt/trillia/venv/bin/pip install --no-cache-dir /opt/trillia/backend
-# Root owns /opt/trillia; files are world-readable/executable, so the unprivileged
-# airflow user can run /opt/trillia/venv/bin/python without an explicit chown.
+COPY backend/pyproject.toml /opt/exchange/backend/pyproject.toml
+COPY backend/src /opt/exchange/backend/src
+RUN python3 -m venv /opt/exchange/venv \
+    && /opt/exchange/venv/bin/pip install --no-cache-dir --upgrade pip \
+    && /opt/exchange/venv/bin/pip install --no-cache-dir /opt/exchange/backend
+# Root owns /opt/exchange; files are world-readable/executable, so the unprivileged
+# airflow user can run /opt/exchange/venv/bin/python without an explicit chown.
 
 USER airflow
 
