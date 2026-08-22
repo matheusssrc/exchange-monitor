@@ -31,8 +31,14 @@ histórico é persistido em **PostgreSQL** por trás de uma abstração de repos
 - [Subir a stack completa](#subir-a-stack-completa)
 - [API](#api)
 - [Configuração](#configuração)
+- [Pipeline Medallion](#pipeline-medallion)
+- [Estrutura dos dados](#estrutura-dos-dados)
+- [Consultas disponíveis](#consultas-disponíveis)
+- [Indicadores produzidos](#indicadores-produzidos)
 - [Testes e qualidade](#testes-e-qualidade)
 - [Estrutura do projeto](#estrutura-do-projeto)
+- [Limitações conhecidas](#limitações-conhecidas)
+- [Remover recursos](#remover-recursos)
 - [Diferenciais entregues](#diferenciais-entregues)
 - [Licença](#licença)
 
@@ -48,6 +54,9 @@ O serviço resolve o requisito central de **monitoramento contínuo de câmbio**
    (`/rates/history`), ambos exigidos pelo teste.
 4. O dashboard React consome a API, monta **candlesticks (OHLC)** por timeframe e atualiza
    a cada 30s.
+5. Um pipeline **Medallion** (Bronze → Silver → Gold), orquestrado pela DAG `build_medallion`,
+   transforma o histórico cru em camadas tratadas (Parquet) via **DuckDB** e produz os
+   indicadores analíticos.
 
 ## Demo
 
@@ -63,7 +72,8 @@ Link direto: https://youtu.be/Z3HWFJzK0NM
 | Camada | Tecnologias |
 |---|---|
 | **Backend** | Python 3.12, FastAPI, SQLAlchemy 2 (async) + asyncpg, Alembic, Pydantic v2, httpx + tenacity, structlog, Prometheus |
-| **Orquestração** | Apache Airflow 2.10 (LocalExecutor) — DAG `collect_rates` |
+| **Processamento** | DuckDB (SQL + Parquet) — camadas Silver/Gold da arquitetura Medallion |
+| **Orquestração** | Apache Airflow 2.10 (LocalExecutor) — DAGs `collect_rates` e `build_medallion` |
 | **Frontend** | React 19, Vite 8, TypeScript 6 (strict), Tailwind CSS + shadcn/ui, TanStack Query v5, Recharts 3, Zod 4 |
 | **Infra** | Docker Compose (local), Terraform esquemático para AWS (ECS Fargate + RDS + ALB) |
 | **Qualidade** | pytest (unit + integração via testcontainers), ruff, mypy (strict), Vitest + Testing Library + MSW, GitHub Actions |
@@ -176,6 +186,61 @@ Tudo via variáveis de ambiente (ver [`.env.example`](.env.example)):
 | `EXCHANGE_LOG_LEVEL` / `EXCHANGE_LOG_JSON` | `INFO` / `true` | Logging (structlog) |
 | `VITE_API_BASE_URL` | `http://localhost:8000` | Base da API para o frontend |
 
+## Pipeline Medallion
+
+Além da coleta contínua, um pipeline batch/micro-batch transforma o histórico cru em camadas
+tratadas seguindo a arquitetura **Medallion**. A DAG `build_medallion` (Airflow) encadeia as
+etapas com dependência real — `build_silver → build_gold → validate_gold` — de modo que uma
+etapa nunca roda antes da anterior concluir. As mesmas etapas podem ser executadas manualmente:
+
+```bash
+docker compose run --rm api build-silver     # Bronze → Silver (Parquet)
+docker compose run --rm api build-gold       # Silver → Gold  (Parquet)
+docker compose run --rm api validate-gold    # valida a camada Gold e loga o relatório
+```
+
+O processamento usa **DuckDB**: lê a camada Bronze (tabela `exchange_rates`), grava Parquet
+particionado nas camadas tratadas e agrega os indicadores.
+
+## Estrutura dos dados
+
+| Camada | Local | Conteúdo |
+|---|---|---|
+| **Bronze** | tabela `exchange_rates` + `data/bronze/<par>/<data>.jsonl` | ticks crus (payload original, sem transformação) |
+| **Silver** | `data/silver/silver.parquet` | limpo, tipado, UTC, com `mid` e `spread`; inválidos descartados |
+| **Gold** | `data/gold/gold_daily.parquet`, `gold_hourly.parquet` | indicadores por par/dia e eventos por par/hora |
+
+**Esquema Bronze (`exchange_rates`):** `pair`, `bid`, `ask`, `fetched_at`, `provider_timestamp`,
+`provider_name`.
+**Silver:** acrescenta `mid = (bid+ask)/2`, `spread = ask−bid`, `day`, `hour`.
+**Gold (diário):** `pair`, `day`, `open`, `close`, `high`, `low`, `avg_mid`, `volatility`,
+`avg_spread`, `variation_pct`, `tick_count`.
+
+## Consultas disponíveis
+
+Três consultas analíticas (DuckDB) sobre a camada Gold, em [`queries/`](queries/):
+
+| Arquivo | Consulta |
+|---|---|
+| `queries/q1_variacao_diaria.sql` | Variação percentual diária por par |
+| `queries/q2_ranking_volatilidade.sql` | Ranking de pares mais voláteis (desvio-padrão do `mid`) |
+| `queries/q3_spread_min_max.sql` | Spread médio e faixa (min/max do `mid`) por par/dia |
+
+```bash
+# Ex.: substitua DAILY_PARQUET pelo caminho do gold_daily.parquet e rode no DuckDB
+duckdb -c ".read queries/q1_variacao_diaria.sql"
+```
+
+## Indicadores produzidos
+
+- **Spread médio** (`ask − bid`);
+- **Volatilidade diária** (desvio-padrão do `mid`);
+- **Variação percentual diária** (`(close − open) / open`);
+- **Mínimo/máximo do `mid`** e faixa do dia (`high − low`);
+- **OHLC** por par/dia;
+- **Eventos por hora** (contagem de coletas por par/hora);
+- **Percentual de registros inválidos** (qualidade dos dados).
+
 ## Testes e qualidade
 
 ```bash
@@ -199,19 +264,42 @@ Terraform a cada push/PR.
 
 ```
 .
-├── backend/        # API FastAPI + Clean Architecture + CLI de coleta
+├── backend/        # API FastAPI + Clean Architecture + CLI (coleta + Medallion)
 ├── frontend/       # SPA React (Vite + TypeScript)
-├── airflow/        # Dockerfile + DAG collect_rates
+├── airflow/        # Dockerfile + DAGs collect_rates e build_medallion
+├── processing/     # SQL DuckDB das camadas Silver e Gold
+├── queries/        # consultas analíticas sobre a camada Gold
+├── data/           # bronze/ silver/ gold/ (runtime) e sample/ (amostra versionada)
+├── entregas/       # documentos e evidências da atividade
 ├── terraform/      # IaC esquemático para AWS (não aplicado)
 ├── compose.yml     # Orquestração local (db, api, frontend, airflow)
 └── .env.example
 ```
 
+## Limitações conhecidas
+
+- Pipeline **batch/micro-batch** (coleta a cada 30s, camadas a cada 5 min) — não é streaming
+  em tempo real.
+- Camada Gold servida via **Parquet + consultas DuckDB**; não há data warehouse dedicado nem
+  endpoint de indicadores exposto pela API (caminho opcional não habilitado nesta versão).
+- Ambiente **local** (Docker Compose). O Terraform para AWS é esquemático e não é aplicado.
+- A extensão `postgres` do DuckDB é baixada na primeira execução — o host precisa de acesso à
+  internet para o primeiro `build-silver`.
+
+## Remover recursos
+
+```bash
+docker compose down -v            # para a stack e remove os volumes (zera o banco)
+rm -rf data/silver data/gold      # remove os Parquet gerados em runtime (opcional)
+cd terraform && terraform destroy  # apenas se algum recurso AWS tiver sido aplicado
+```
+
 ## Diferenciais entregues
 
-Dashboard React (candlestick OHLC) · Docker Compose · múltiplos pares de moedas ·
-Apache Airflow · Terraform esquemático (AWS) · métricas Prometheus · CI/CD (GitHub Actions) ·
-vídeo de demonstração.
+Pipeline Medallion (Bronze/Silver/Gold) com DuckDB + Parquet · dashboard React (candlestick
+OHLC) · Docker Compose · múltiplos pares de moedas · Apache Airflow (coleta + build_medallion) ·
+Terraform esquemático (AWS) · métricas Prometheus · CI/CD (GitHub Actions) · vídeo de
+demonstração.
 
 ## Licença
 
