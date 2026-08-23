@@ -3,8 +3,8 @@ from decimal import Decimal
 
 import pytest
 
-from trillia_monitor.domain.entities import ExchangeRate
-from trillia_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.domain.entities import ExchangeRate
+from exchange_monitor.domain.value_objects import CurrencyPair
 
 
 def _utc(year: int = 2026, month: int = 5, day: int = 27, hour: int = 12) -> datetime:

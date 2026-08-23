@@ -1,6 +1,6 @@
-# Trillia Exchange Monitor — Frontend
+# Exchange Monitor — Frontend
 
-Dashboard SPA em **React + TypeScript** para o Trillia Exchange Monitor. Consome a API REST
+Dashboard SPA em **React + TypeScript** para o Exchange Monitor. Consome a API REST
 do backend e mostra o monitoramento de câmbio em tempo quase real numa única tela:
 
 - **seletor de moeda base** (ex.: BRL) que filtra os pares exibidos;

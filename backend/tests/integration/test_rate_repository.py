@@ -4,9 +4,9 @@ from decimal import Decimal
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from trillia_monitor.domain.entities import ExchangeRate
-from trillia_monitor.domain.value_objects import CurrencyPair
-from trillia_monitor.infrastructure.persistence.repositories import SqlAlchemyRateRepository
+from exchange_monitor.domain.entities import ExchangeRate
+from exchange_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.infrastructure.persistence.repositories import SqlAlchemyRateRepository
 
 
 def _rate(day: int = 1, hour: int = 12) -> ExchangeRate:

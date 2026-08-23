@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
-from trillia_monitor.infrastructure.persistence.session import (
+from exchange_monitor.infrastructure.persistence.session import (
     build_engine,
     build_session_factory,
 )

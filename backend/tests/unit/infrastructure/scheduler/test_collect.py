@@ -5,13 +5,13 @@ from unittest.mock import AsyncMock
 
 import pytest
 
+from exchange_monitor.config import Settings
+from exchange_monitor.domain.entities import ExchangeRate
+from exchange_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.infrastructure.providers.exceptions import ProviderUnavailable
+from exchange_monitor.infrastructure.scheduler import collect as collect_module
+from exchange_monitor.infrastructure.scheduler.collect import collect_pair
 from tests.unit.application.use_cases.fakes import InMemoryRateRepository
-from trillia_monitor.config import Settings
-from trillia_monitor.domain.entities import ExchangeRate
-from trillia_monitor.domain.value_objects import CurrencyPair
-from trillia_monitor.infrastructure.providers.exceptions import ProviderUnavailable
-from trillia_monitor.infrastructure.scheduler import collect as collect_module
-from trillia_monitor.infrastructure.scheduler.collect import collect_pair
 
 
 class _FakeSessionCM:

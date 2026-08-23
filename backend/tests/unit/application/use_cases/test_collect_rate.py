@@ -3,9 +3,9 @@ from decimal import Decimal
 
 import pytest
 
-from trillia_monitor.application.use_cases.collect_rate import CollectRateUseCase
-from trillia_monitor.domain.entities import ExchangeRate
-from trillia_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.application.use_cases.collect_rate import CollectRateUseCase
+from exchange_monitor.domain.entities import ExchangeRate
+from exchange_monitor.domain.value_objects import CurrencyPair
 
 from .fakes import InMemoryRateRepository, StubRateProvider
 

@@ -1,4 +1,4 @@
-# Terraform — Deploy esquemático na AWS (Trillia Exchange Monitor)
+# Terraform — Deploy esquemático na AWS (Exchange Monitor)
 
 > **Esta é uma infraestrutura como código esquemática. Ela nunca é aplicada.**
 > Documenta a topologia de produção pretendida e é mantida `validate`-clean.

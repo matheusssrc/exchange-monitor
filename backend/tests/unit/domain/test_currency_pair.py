@@ -2,7 +2,7 @@ from dataclasses import FrozenInstanceError
 
 import pytest
 
-from trillia_monitor.domain.value_objects import CurrencyPair
+from exchange_monitor.domain.value_objects import CurrencyPair
 
 
 class TestCurrencyPairConstruction:

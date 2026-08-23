@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from trillia_monitor.domain.exceptions import (
+from exchange_monitor.domain.exceptions import (
     InvalidCurrencyPair,
     InvalidDateRange,
     RateNotFound,
 )
-from trillia_monitor.infrastructure.api.errors import register_exception_handlers
-from trillia_monitor.infrastructure.providers.exceptions import (
+from exchange_monitor.infrastructure.api.errors import register_exception_handlers
+from exchange_monitor.infrastructure.providers.exceptions import (
     ProviderResponseInvalid,
     ProviderUnavailable,
 )

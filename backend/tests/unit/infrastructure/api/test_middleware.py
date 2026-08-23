@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from trillia_monitor.infrastructure.api.middleware import (
+from exchange_monitor.infrastructure.api.middleware import (
     CORRELATION_HEADER,
     CorrelationIdMiddleware,
     RequestLoggingMiddleware,

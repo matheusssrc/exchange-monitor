@@ -12,12 +12,12 @@ jobs:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_USER: trillia
-          POSTGRES_PASSWORD: trillia
-          POSTGRES_DB: trillia
+          POSTGRES_USER: exchange
+          POSTGRES_PASSWORD: exchange
+          POSTGRES_DB: exchange
         ports: ["5432:5432"]
         options: >-
-          --health-cmd "pg_isready -U trillia" --health-interval 5s
+          --health-cmd "pg_isready -U exchange" --health-interval 5s
           --health-timeout 3s --health-retries 10
     defaults:
       run:
@@ -37,8 +37,8 @@ jobs:
         run: mypy src
       - name: Tests (unit + integration)
         env:
-          TRILLIA_DATABASE_URL: postgresql+asyncpg://trillia:trillia@localhost:5432/trillia
-        run: pytest --cov=trillia_monitor --cov-report=term-missing --cov-fail-under=85
+          EXCHANGE_DATABASE_URL: postgresql+asyncpg://exchange:exchange@localhost:5432/exchange
+        run: pytest --cov=exchange_monitor --cov-report=term-missing --cov-fail-under=85
 
   frontend:
     runs-on: ubuntu-latest
@@ -66,11 +66,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build backend image
-        run: docker build --target runtime -t trillia-backend:ci ./backend
+        run: docker build --target runtime -t exchange-backend:ci ./backend
       - name: Build frontend image
-        run: docker build -t trillia-frontend:ci ./frontend
+        run: docker build -t exchange-frontend:ci ./frontend
       - name: Build Airflow image
-        run: docker build -f airflow/Dockerfile -t trillia-airflow:ci .
+        run: docker build -f airflow/Dockerfile -t exchange-airflow:ci .
 
   terraform:
     runs-on: ubuntu-latest

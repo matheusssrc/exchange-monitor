@@ -4,8 +4,8 @@ import logging
 import pytest
 import structlog
 
-from trillia_monitor.config import Settings
-from trillia_monitor.infrastructure.observability.logging import configure_logging
+from exchange_monitor.config import Settings
+from exchange_monitor.infrastructure.observability.logging import configure_logging
 
 
 def test_configure_logging_sets_json_renderer(capsys: pytest.CaptureFixture[str]) -> None:

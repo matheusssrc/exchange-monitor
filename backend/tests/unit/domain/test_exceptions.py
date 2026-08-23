@@ -1,6 +1,6 @@
 import pytest
 
-from trillia_monitor.domain.exceptions import (
+from exchange_monitor.domain.exceptions import (
     DomainError,
     InvalidCurrencyPair,
     InvalidDateRange,

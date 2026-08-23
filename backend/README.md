@@ -1,4 +1,4 @@
-# Trillia Exchange Monitor — Backend
+# Exchange Monitor — Backend
 
 API e domínio do monitor de câmbio. Implementado em **Python 3.12** com **FastAPI** e
 **Clean Architecture**: o domínio não conhece framework nem banco; a persistência fica
@@ -7,7 +7,7 @@ atrás da porta `RateRepository` e o provedor de cotações atrás de `RateProvi
 ## Camadas
 
 ```
-src/trillia_monitor/
+src/exchange_monitor/
 ├── domain/           # CurrencyPair, ExchangeRate, invariantes e erros tipados
 ├── application/      # Casos de uso + portas (RateRepository, RateProvider)
 └── infrastructure/
@@ -34,12 +34,12 @@ cd backend
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
 
-# Suba um Postgres e exporte TRILLIA_DATABASE_URL apontando para ele.
-python -m trillia_monitor migrate                    # aplica as migrations (alembic upgrade head)
-python -m trillia_monitor api --host 0.0.0.0 --port 8000
+# Suba um Postgres e exporte EXCHANGE_DATABASE_URL apontando para ele.
+python -m exchange_monitor migrate                    # aplica as migrations (alembic upgrade head)
+python -m exchange_monitor api --host 0.0.0.0 --port 8000
 ```
 
-### CLI (`trillia-monitor`)
+### CLI (`exchange-monitor`)
 
 | Comando | Descrição |
 |---|---|
@@ -49,7 +49,7 @@ python -m trillia_monitor api --host 0.0.0.0 --port 8000
 | `worker` | Worker APScheduler (alternativa local ao Airflow). |
 
 ```bash
-python -m trillia_monitor collect BRL-USD
+python -m exchange_monitor collect BRL-USD
 ```
 
 ## API
@@ -82,10 +82,10 @@ mypy .                 # tipagem estrita
 
 ## Configuração
 
-Via variáveis de ambiente com prefixo `TRILLIA_` (ver [`.env.example`](../.env.example)):
-`TRILLIA_DATABASE_URL`, `TRILLIA_MONITORED_PAIRS`, `TRILLIA_POLLING_INTERVAL_SECONDS`,
-`TRILLIA_AWESOMEAPI_BASE_URL`, `TRILLIA_PROVIDER_TIMEOUT_SECONDS`,
-`TRILLIA_PROVIDER_RETRY_ATTEMPTS`, `TRILLIA_LOG_LEVEL`, `TRILLIA_LOG_JSON`.
+Via variáveis de ambiente com prefixo `EXCHANGE_` (ver [`.env.example`](../.env.example)):
+`EXCHANGE_DATABASE_URL`, `EXCHANGE_MONITORED_PAIRS`, `EXCHANGE_POLLING_INTERVAL_SECONDS`,
+`EXCHANGE_AWESOMEAPI_BASE_URL`, `EXCHANGE_PROVIDER_TIMEOUT_SECONDS`,
+`EXCHANGE_PROVIDER_RETRY_ATTEMPTS`, `EXCHANGE_LOG_LEVEL`, `EXCHANGE_LOG_JSON`.
 
 ---
 

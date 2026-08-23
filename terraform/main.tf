@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Schematic AWS topology for the Trillia Exchange Monitor.
+# Schematic AWS topology for the Exchange Monitor.
 # NOT APPLIED. Demonstrates the intended ECS Fargate + RDS + ALB deployment.
 # ---------------------------------------------------------------------------
 
@@ -155,8 +155,8 @@ resource "aws_db_instance" "main" {
   engine_version         = "16"
   instance_class         = var.db_instance_class
   allocated_storage      = 20
-  db_name                = "trillia"
-  username               = "trillia"
+  db_name                = "exchange"
+  username               = "exchange"
   password               = "change-me-in-secrets-manager"
   db_subnet_group_name   = aws_db_subnet_group.main.name
   vpc_security_group_ids = [aws_security_group.rds.id]
@@ -207,7 +207,7 @@ resource "aws_ecs_task_definition" "api" {
       command      = ["api", "--host", "0.0.0.0", "--port", "8000"]
       portMappings = [{ containerPort = 8000, protocol = "tcp" }]
       secrets = [
-        { name = "TRILLIA_DATABASE_URL", valueFrom = aws_secretsmanager_secret.database_url.arn },
+        { name = "EXCHANGE_DATABASE_URL", valueFrom = aws_secretsmanager_secret.database_url.arn },
       ]
       logConfiguration = {
         logDriver = "awslogs"

@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "project_name" {
   description = "Prefix applied to resource names."
   type        = string
-  default     = "trillia"
+  default     = "exchange"
 }
 
 variable "vpc_cidr" {
@@ -43,13 +43,13 @@ variable "db_instance_class" {
 variable "api_image" {
   description = "Container image for the API task (ECR URI)."
   type        = string
-  default     = "trillia-backend:latest"
+  default     = "exchange-backend:latest"
 }
 
 variable "frontend_image" {
   description = "Container image for the frontend task (ECR URI)."
   type        = string
-  default     = "trillia-frontend:latest"
+  default     = "exchange-frontend:latest"
 }
 
 variable "api_desired_count" {
