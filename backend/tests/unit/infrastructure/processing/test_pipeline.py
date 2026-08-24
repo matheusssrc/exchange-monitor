@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import duckdb
+import pytest
 
 from exchange_monitor.infrastructure.processing import pipeline
 
@@ -52,3 +53,15 @@ def test_validate_gold_flags_invalid_ratio(tmp_path: Path) -> None:
     report = pipeline.validate_gold(con)
     assert report["daily_rows"] >= 2
     assert report["null_variation"] == 0
+
+
+def test_validate_gold_raises_when_empty(tmp_path: Path) -> None:
+    con = duckdb.connect()
+    con.execute(
+        "CREATE TABLE bronze (pair VARCHAR, bid DOUBLE, ask DOUBLE, "
+        "fetched_at TIMESTAMP, provider_timestamp TIMESTAMP, provider_name VARCHAR)"
+    )
+    pipeline.build_silver(con, out_dir=tmp_path / "silver")
+    pipeline.build_gold(con, out_dir=tmp_path / "gold")
+    with pytest.raises(ValueError):
+        pipeline.validate_gold(con)

@@ -1,3 +1,4 @@
+import os
 from collections.abc import AsyncIterator, Iterator
 
 import pytest
@@ -15,9 +16,14 @@ from exchange_monitor.infrastructure.persistence.models import Base
 
 @pytest.fixture(scope="session")
 def postgres_url() -> Iterator[str]:
+    # In CI a Postgres service is provided via EXCHANGE_DATABASE_URL; use it
+    # directly. Locally, fall back to spinning an ephemeral container.
+    env_url = os.environ.get("EXCHANGE_DATABASE_URL")
+    if env_url:
+        yield env_url
+        return
     with PostgresContainer("postgres:16-alpine") as container:
-        url = container.get_connection_url().replace("psycopg2", "asyncpg")
-        yield url
+        yield container.get_connection_url().replace("psycopg2", "asyncpg")
 
 
 @pytest_asyncio.fixture
