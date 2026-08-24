@@ -35,18 +35,14 @@ def build_silver(con: duckdb.DuckDBPyConnection, *, out_dir: str | Path) -> None
     _run_sql_file(con, "build_silver.sql")
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
-    con.execute(
-        f"COPY silver TO '{(out / 'silver.parquet').as_posix()}' (FORMAT PARQUET)"
-    )
+    con.execute(f"COPY silver TO '{(out / 'silver.parquet').as_posix()}' (FORMAT PARQUET)")
 
 
 def build_gold(con: duckdb.DuckDBPyConnection, *, out_dir: str | Path) -> None:
     _run_sql_file(con, "build_gold.sql")
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
-    con.execute(
-        f"COPY gold_daily TO '{(out / 'gold_daily.parquet').as_posix()}' (FORMAT PARQUET)"
-    )
+    con.execute(f"COPY gold_daily TO '{(out / 'gold_daily.parquet').as_posix()}' (FORMAT PARQUET)")
     con.execute(
         f"COPY gold_hourly TO '{(out / 'gold_hourly.parquet').as_posix()}' (FORMAT PARQUET)"
     )
@@ -54,9 +50,7 @@ def build_gold(con: duckdb.DuckDBPyConnection, *, out_dir: str | Path) -> None:
 
 def validate_gold(con: duckdb.DuckDBPyConnection) -> dict[str, Any]:
     daily_rows = _scalar(con, "SELECT count(*) FROM gold_daily")
-    null_variation = _scalar(
-        con, "SELECT count(*) FROM gold_daily WHERE variation_pct IS NULL"
-    )
+    null_variation = _scalar(con, "SELECT count(*) FROM gold_daily WHERE variation_pct IS NULL")
     report = {"daily_rows": daily_rows, "null_variation": null_variation}
     if daily_rows == 0:
         raise ValueError("gold validation failed: gold_daily is empty")

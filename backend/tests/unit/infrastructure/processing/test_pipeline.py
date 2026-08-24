@@ -24,9 +24,7 @@ def test_build_silver_derives_mid_and_spread_and_filters(tmp_path: Path) -> None
     con = _bronze_con()
     out = tmp_path / "silver"
     pipeline.build_silver(con, out_dir=out)
-    rows = con.execute(
-        "SELECT pair, mid, spread FROM silver ORDER BY pair, fetched_at"
-    ).fetchall()
+    rows = con.execute("SELECT pair, mid, spread FROM silver ORDER BY pair, fetched_at").fetchall()
     assert rows[0][0] == "BRL-EUR"
     assert float(rows[0][1]) == 5.56
     assert round(float(rows[0][2]), 2) == 0.02
@@ -38,8 +36,7 @@ def test_build_gold_computes_indicators(tmp_path: Path) -> None:
     pipeline.build_silver(con, out_dir=tmp_path / "silver")
     pipeline.build_gold(con, out_dir=tmp_path / "gold")
     daily = con.execute(
-        "SELECT pair, open, close, tick_count, variation_pct FROM gold_daily "
-        "WHERE pair='BRL-USD'"
+        "SELECT pair, open, close, tick_count, variation_pct FROM gold_daily WHERE pair='BRL-USD'"
     ).fetchone()
     assert daily is not None
     assert daily[3] == 3
